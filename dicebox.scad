@@ -244,6 +244,26 @@ middle_plate();
 translate([0,(width+30)*2,0])
  top_piece();
 
+// Play mode
+color("lightgray") translate([length*1.5,0,0]) {
+    bottom_piece();
+    translate([0,0,vault_height+2]) {
+        middle_plate();
+        translate([0,0,middle_height+2])
+        top_piece();
+    }
+}
+
+// Storage mode
+color("lightgray") translate([length*3,0,0]) {
+    bottom_piece();
+    translate([0,0,vault_height+2]) {
+        top_piece();
+        translate([0,0,-vault_height-2]) rotate([180,0,0]) translate([0,-width,-vault_height-2-tray_height-2-middle_height])
+        middle_plate();
+    }
+}
+
 
 // ======================
 // Highlight D20
