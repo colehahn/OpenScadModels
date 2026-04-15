@@ -1,11 +1,6 @@
-
-
 $fn=64;
 
-// ======================
-// A5 + 10% footprint
-// ======================
-
+// A5 paper: 210mm x 148mm
 length = 225*0.84;
 width = 156*0.84;
 
@@ -13,22 +8,23 @@ wall = 3;
 corner_r = 16;
 corner_extra_thickness = 15;
 
-middle_h = 12.5;
+middle_height_portion = 0.4;
 box_size = 25.2;
-vault_height = wall + box_size - 5;
-tray_height = wall + box_size - middle_h;
+vault_height = wall + box_size;
+middle_height = wall + box_size * middle_height_portion;
+tray_height = wall + box_size * (1 - middle_height_portion);
 
 // divider
-divider = 3;
 divider_position = 0.32;
-divider_drop = 6.35;
+divider_drop = 2;
+divider_smoothness = 0.5;  // from 0 to 1 exclusive
 
 
 // ======================
 // Magnet settings
 // ======================
 
-magnet_d = 5.2;
+magnet_d = 5.7;
 magnet_depth = 3;
 magnet_offset = 8;
 
@@ -176,16 +172,16 @@ module middle_plate(){
 
 difference(){
 
-linear_extrude(middle_h)
+linear_extrude(middle_height)
 rounded_rect(length,width,corner_r);
 
 translate([wall,wall,wall])
-linear_extrude(middle_h)
+linear_extrude(middle_height)
 rounded_rect(length-2*wall,width-2*wall,corner_r+corner_extra_thickness);
 
 // magnets
 magnet_holes(0);
-magnet_holes(middle_h-magnet_depth);
+magnet_holes(middle_height-magnet_depth);
 
 }
 
@@ -215,12 +211,15 @@ rounded_rect(length-2*wall,width-2*wall,corner_r+corner_extra_thickness);
 
 }
 
-translate([divider_x-divider/2,wall,wall])
+translate([divider_x-wall/2,wall,wall])
+minkowski() {
 cube([
-divider,
+wall * (1-divider_smoothness),
 width-2*wall,
 tray_height-wall-divider_drop
 ]);
+sphere(d=wall*divider_smoothness);
+}
 
 }
 
