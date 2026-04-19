@@ -1,0 +1,41 @@
+$fn=5;
+
+d = 50.8; //50.8=2in
+h = 3;
+h_inner=2;
+line_thickness=1;
+roundness=1;
+inner_cube_size = 6;
+
+module border() {
+    difference() {
+    cylinder(d=d,h=h);
+    translate([0,0,h_inner]) cylinder(d=d-line_thickness*2,h=h-h_inner);
+    }
+}
+
+module spokes_with_r_and_offset(r, angle_offset) {
+    for(i=[0:5]) {
+        rotate(angle_offset+i*(360/5))
+        translate([r/2,0,h-line_thickness/2])
+        cube([r, line_thickness, line_thickness],center=true);
+    }
+}
+
+module spokes() {
+    spokes_with_r_and_offset(d*0.5-line_thickness/2,0);
+    spokes_with_r_and_offset(d*0.4,360/10);
+}
+
+module protractor() {
+    border();
+    spokes();
+}
+
+difference() {
+    protractor();
+    cube(inner_cube_size,center=true);
+}
+
+
+
