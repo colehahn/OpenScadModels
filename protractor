@@ -5,7 +5,7 @@ h = 3;
 h_inner=2;
 line_thickness=1;
 roundness=1;
-inner_cube_size = 6;
+inner_cube_size = 6.35;
 
 module border() {
     difference() {
@@ -36,6 +36,3 @@ difference() {
     protractor();
     cube(inner_cube_size,center=true);
 }
-
-
-
